@@ -45,6 +45,29 @@
   background-color: #008000;
 }
 
+.todo-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 30%;
+  max-width: 500px;
+  padding: 10px 15px;
+  background: #fff;
+  letter-spacing: 0.5px;
+  background-size: 1.8em;
+  background-repeat: no-repeat;
+  background-position: 97% 60%;
+  background-image: url("./assets/chevron-down.png");
+}
+.todo-select:focus {
+  outline: 0;
+}
+
+.todo-select::-ms-expand {
+  display: none;
+}
+
+
 .e-input-group:not(.e-float-icon-left),
 .e-input-group.e-success:not(.e-float-icon-left),
 .e-input-group.e-warning:not(.e-float-icon-left),
@@ -54,4 +77,8 @@
 .e-input-group.e-control-wrapper.e-warning:not(.e-float-icon-left),
 .e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left) {
   border: none;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
+  background: #7d7d7d;
 }

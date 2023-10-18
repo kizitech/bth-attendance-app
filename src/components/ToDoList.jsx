@@ -7,11 +7,14 @@ import {
   sortTodo,
   toggleCompleted,
 } from "../Store/ToDoSlice.jsx";
+import { EmptySvg } from ".";
 import { TiPencil } from "react-icons/ti";
 import { BsTrash } from "react-icons/bs";
-import empty from "../assets/empty.png";
+import { useStateContext } from "../contexts/ContextProvider";
+
 function TodoList() {
   const dispatch = useDispatch();
+  const { currentColor } = useStateContext();
   const todoList = useSelector((state) => state.todo.todoList);
   const sortCriteria = useSelector((state) => state.todo.sortCriteria);
   const [showModal, setShowModal] = useState(false);
@@ -88,7 +91,8 @@ function TodoList() {
                       setShowModal(false);
                       handleUpdateToDoList(currentTodo.id, newTask);
                     }}
-                    className="bg-sunsetOrange text-white py-3 px-10 rounded-md"
+                    className="text-white py-3 px-10 rounded-md"
+                    style={{ backgroundColor: currentColor }}
                   >
                     Save
                   </button>
@@ -108,7 +112,8 @@ function TodoList() {
                     Cancel
                   </button>
                   <button
-                    className="bg-sunsetOrange text-white py-3 px-10 rounded-md"
+                    className="text-white py-3 px-10 rounded-md"
+                    style={{ backgroundColor: currentColor }}
                     onClick={() => {
                       handleAddTodo(newTask);
                       setShowModal(false);
@@ -126,8 +131,8 @@ function TodoList() {
       <div className=" flex items-center justify-center flex-col">
         {todoList.length === 0 ? (
           <div className="mb-6">
-            <div className="sm:w-[500px] sm:h-[500px] min-w-[250px] min-[250px]">
-              <img src={empty} alt="" />
+            <div className="sm:w-[100%] sm:h-[500px] min-w-[250px]">
+              <EmptySvg />
             </div>
             <p className="text-center text-Gray">
               You have no todo's, please add one.
@@ -135,10 +140,10 @@ function TodoList() {
           </div>
         ) : (
           <div className="container mx-auto mt-6">
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center items-center mb-6">
               <select
                 onChange={(e) => handleSort(e.target.value)}
-                className="p-1 outline-none text-sm"
+                className="p-2 outline-none text-sm border-1 cursor-pointer todo-select"
               >
                 <option value="All" className="text-sm">
                   All
@@ -151,49 +156,66 @@ function TodoList() {
                 </option>
               </select>
             </div>
-            <div>
-              {sortToDoList.map((todo) => (
-                <div
-                  key={todo.id}
-                  className="flex items-center justify-between mb-6 bg-Tangaroa mx-auto w-full md:w-[75%] rounded-md p-4"
-                >
+            <section className="flex flex-col">
+            {sortToDoList.map((todo) => (
+              <button
+                type="button"
+                className={`${todo.completed ? " opacity-30" : "opacity-100"}`}
+                onClick={() => {
+                  handleToggleCompleted(todo.id);
+                }}
+              >
+                <div>
                   <div
-                    className={`${
-                      todo.completed
-                        ? "line-through text-greenTeal"
-                        : "text-white"
-                    }`}
-                    onClick={() => {
-                      handleToggleCompleted(todo.id);
+                    key={todo.id}
+                    style={{
+                      border: currentColor,
+                      borderWidth: 1,
+                      borderStyle: "solid",
                     }}
+                    className="flex items-center justify-between mb-6 mx-auto w-full md:w-[75%] rounded-md p-4"
                   >
-                    {todo.task}
-                  </div>
-                  <div>
-                    <button
-                      className="bg-blue-500 text-white p-1 rounded-md ml-2"
+                    <div
+                      className={`${
+                        todo.completed
+                          ? "line-through text-gray-400"
+                          : "text-black"
+                      }`}
                       onClick={() => {
-                        setShowModal(true);
-                        setCurrentTodo(todo);
-                        setNewTask(todo.task);
+                        handleToggleCompleted(todo.id);
                       }}
                     >
-                      <TiPencil />
-                    </button>
-                    <button
-                      className="bg-sunsetOrange text-white p-1 rounded-md ml-2"
-                      onClick={() => handleDeleteToDo(todo.id)}
-                    >
-                      <BsTrash />
-                    </button>
+                      {todo.task}
+                    </div>
+                    <div>
+                      <button
+                        style={{ backgroundColor: currentColor }}
+                        className="text-white p-1 rounded-md ml-2"
+                        onClick={() => {
+                          setShowModal(true);
+                          setCurrentTodo(todo);
+                          setNewTask(todo.task);
+                        }}
+                      >
+                        <TiPencil />
+                      </button>
+                      <button
+                        className=" bg-red-500 text-white p-1 rounded-md ml-2"
+                        onClick={() => handleDeleteToDo(todo.id)}
+                      >
+                        <BsTrash />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </button>
+            ))}
+            </section>
           </div>
         )}
         <button
-          className="bg-sunsetOrange text-center text-white py-3 px-10 rounded-md"
+          className="text-center text-white py-3 px-10 rounded-md"
+          style={{ backgroundColor: currentColor }}
           onClick={() => {
             setShowModal(true);
           }}
