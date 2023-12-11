@@ -5,6 +5,7 @@ import { Button } from '.';
 import { userProfileData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import avatar from '../data/avatar.jpg';
+import { Link } from 'react-router-dom';
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
@@ -35,7 +36,7 @@ const UserProfile = () => {
       </div>
       <div>
         {userProfileData.map((item, index) => (
-          <div key={index} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
+          <Link key={index} to={item.link} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
             <button
               type="button"
               style={{ color: item.iconColor, backgroundColor: item.iconBg }}
@@ -48,7 +49,7 @@ const UserProfile = () => {
               <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
               <p className="text-gray-500 text-sm dark:text-gray-400"> {item.desc} </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="mt-5">
